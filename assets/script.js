@@ -41,7 +41,7 @@ let slides =
 			})
 		}
 
-		const DotsLength = slides.Dots.children.length;
+		const DotsLength = slides.Dots.childElementCount;
 		const Dots = slides.Dots;
 		for(let i= 0; i < DotsLength; i++)
 		{
@@ -56,19 +56,18 @@ let slides =
 	{
 		const Dots = slides.Dots;
 		const DotsChildCount = Dots.childElementCount;
-		let PlusOuMoins = "+";
+		let PlusOuMoins = slides.CurrentPosition+1;
 
 		
 		if(ArrowDirection === slides.Left)
-			PlusOuMoins = "-";
+			PlusOuMoins = slides.CurrentPosition-1;
 
-		
-		if(Dots.children[eval(slides.CurrentPosition + PlusOuMoins + "1")]
-		!== undefined )
-			slides.CurrentPosition = eval(slides.CurrentPosition + PlusOuMoins + 1);
+
+		if(Dots.children[PlusOuMoins] !== undefined )
+			slides.CurrentPosition = PlusOuMoins;
 		else
 		{
-			if(slides.CurrentPosition == (DotsChildCount - 1) )
+			if(slides.CurrentPosition === (DotsChildCount - 1) )
 				slides.CurrentPosition = 0;
 			else
 				slides.CurrentPosition = DotsChildCount-1;
