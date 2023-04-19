@@ -1,4 +1,4 @@
-let Slides = 
+let slides =
 {
 	Dots : document.querySelector('.dots'),
 	Arrow : document.querySelectorAll('.arrow'),
@@ -27,65 +27,76 @@ let Slides =
 		}
 	],
 
-	"Init" : () => 
+	"init" : () =>
 	{
-		const Arrow = Slides.Arrow;
+		const Arrow = slides.Arrow;
+
 		for(let i = 0; i < Arrow.length; i++)
 		{
 			Arrow[i].addEventListener('click', (e) => {
 				const Elm = e.currentTarget;
 				const ElmClass = Elm.className.split(' ');
 
-				Slides.MouveSlide(ElmClass[1]);
+				slides.mouveSlide(ElmClass[1]);
+			})
+		}
+
+		const DotsLength = slides.Dots.children.length;
+		const Dots = slides.Dots;
+		for(let i= 0; i < DotsLength; i++)
+		{
+			    Dots.children[i].addEventListener('click', (e) => {
+				slides.setCurrentDot(Dots.children[i].getAttribute('data-index') );
+				slides.updateContent(Dots.children[i].getAttribute('data-index') );
 			})
 		}
 	
 	},
-	"MouveSlide" : (ArrowDirection) => 
+	"mouveSlide" : (ArrowDirection) =>
 	{
-		const Dots = Slides.Dots;
+		const Dots = slides.Dots;
 		const DotsChildCount = Dots.childElementCount;
 		let PlusOuMoins = "+";
 
 		
-		if(ArrowDirection === Slides.Left)
+		if(ArrowDirection === slides.Left)
 			PlusOuMoins = "-";
 
 		
-		if(Dots.children[eval(Slides.CurrentPosition + PlusOuMoins + "1")] 
+		if(Dots.children[eval(slides.CurrentPosition + PlusOuMoins + "1")]
 		!== undefined )
-			Slides.CurrentPosition = eval(Slides.CurrentPosition + PlusOuMoins + 1);
+			slides.CurrentPosition = eval(slides.CurrentPosition + PlusOuMoins + 1);
 		else
 		{
-			if(Slides.CurrentPosition == (DotsChildCount - 1) )
-				Slides.CurrentPosition = 0;
+			if(slides.CurrentPosition == (DotsChildCount - 1) )
+				slides.CurrentPosition = 0;
 			else
-				Slides.CurrentPosition = DotsChildCount-1;
+				slides.CurrentPosition = DotsChildCount-1;
 		}
 
-		Slides.setCurrentDot(Slides.CurrentPosition);
-		Slides.UpdateContent(Slides.CurrentPosition);
+		slides.setCurrentDot(slides.CurrentPosition);
+		slides.updateContent(slides.CurrentPosition);
 	},
 	"setCurrentDot" : (NewPosition) => 
 	{
-		Slides.RemoveDotSelected();
-		const CurrentDot = Slides.Dots.children[NewPosition];
+		slides.removeDotSelected();
+		const CurrentDot = slides.Dots.children[NewPosition];
 		CurrentDot.className = "dot dot_selected";
 	},
-	"UpdateContent" : (NewPosition) => 
+	"updateContent" : (NewPosition) =>
 	{
-		Slides.BannerImg.src = Slides.ImgBasePath+Slides.SlidesList[NewPosition].image;
-	    Slides.BannerTxt.innerHTML = Slides.SlidesList[NewPosition].tagLine;
+		slides.BannerImg.src = slides.ImgBasePath+slides.SlidesList[NewPosition].image;
+	    slides.BannerTxt.innerHTML = slides.SlidesList[NewPosition].tagLine;
 	},
-	"RemoveDotSelected" : () => 
+	"removeDotSelected" : () =>
 	{
 		//Pour mettre toutes les classes des points en "dot" uniquement
-		Array.from(Slides.Dots.children).forEach(Dot => {
+		Array.from(slides.Dots.children).forEach(Dot => {
 			Dot.className = "dot";
 		});
 	}
 }
 
-Slides.Init();
+slides.init();
 
 
